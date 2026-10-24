@@ -1,0 +1,7 @@
+# runtime artifacts of the supervisor -- never commit
+.failover-state.json
+.failover-state.tmp
+.failover.lock
+failover.log
+__pycache__/
+*.pyc

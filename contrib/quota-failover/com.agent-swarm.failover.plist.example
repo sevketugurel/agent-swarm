@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kopyala:  ~/Library/LaunchAgents/com.agent-swarm.failover.plist
+  Yolları kendi kullanıcı adına göre düzelt (launchd $HOME genişletmez).
+  Yükle:    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.agent-swarm.failover.plist
+  Kaldır:   launchctl bootout gui/$(id -u)/com.agent-swarm.failover
+  Not: aynı anda Hermes cronjob'u da çalışıyorsa ops/.failover.lock (flock)
+       ikinci örneği atlar; çakışma olmaz.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.agent-swarm.failover</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/USERNAME/agent-swarm-workspace/ops/failover.py</string>
+    <string>watch</string>
+    <string>--apply</string>
+    <string>--interval</string>
+    <string>60</string>
+    <string>--alternate-capacity</string>
+    <string>2</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/USERNAME/agent-swarm-workspace</string>
+
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+
+  <key>StandardOutPath</key>
+  <string>/Users/USERNAME/agent-swarm-workspace/ops/failover.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/USERNAME/agent-swarm-workspace/ops/failover.log</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>LANG</key>
+    <string>en_US.UTF-8</string>
+  </dict>
+</dict>
+</plist>
